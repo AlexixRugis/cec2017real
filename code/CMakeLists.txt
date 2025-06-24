@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 PROJECT(cec17)
+set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -O2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 ADD_EXECUTABLE(test "test.cc")
 ADD_EXECUTABLE(testrandom "testrandom.cc")
 ADD_EXECUTABLE(testsolis "testsolis.cc")
