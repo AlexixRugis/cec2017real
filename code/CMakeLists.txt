@@ -12,3 +12,5 @@ target_include_directories(cec17_test_func PUBLIC
 target_link_libraries(cec17_test cec17_test_func)
 target_link_libraries(cec17_testrandom cec17_test_func)
 target_link_libraries(cec17_testsolis cec17_test_func)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/input_data DESTINATION ${CMAKE_BINARY_DIR})
