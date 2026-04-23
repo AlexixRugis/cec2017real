@@ -22,13 +22,6 @@ void cec17_init(const char *algname, int fid, int size) {
   assert (size == 2 || size == 5 || size == 10 || size == 30 || size == 50 || size == 100);
   funcid = fid;
   dimension = size;
-  count = 0;
-  last_ratio = 0;
-
-  sprintf(directory, "results_%s", algname);
-  sprintf(fname, "%s%cresults_%d_%d.txt", directory, PATH_SEPARATOR, fid, size);
-  print_output = 0;
-  max_evals = 10000*dimension;
 }
 
 void cec17_print_output(void) {
@@ -47,56 +40,6 @@ double cec17_fitness(double *sol) {
   int ratio;
 
   cec17_test_func(sol, &fit, dimension, 1, funcid);
-  count += 1;
-
-  if (count > max_evals) {
-      fprintf(stderr, "Warning: evaluation will be ignored\n");
-      return fit;
-  }
-
-  if (count == 1 || fit < best) {
-    best = fit;
-  }
-
-  ratio = count*100/max_evals;
-
-  if (ratio >= ratios[last_ratio]) {
-    if (output == NULL && print_output == 0) {
-      int exists = 0;
-      FILE *ver = fopen(fname, "r");
-      if (ver != NULL) {
-        exists = 1;
-        fclose(ver);
-      }
-
-      output = fopen(fname, "a");
-
-      if (output == NULL) {
-        fprintf(stderr, "Error, it cannot be possible to create file '%s', the directory '%s' exists?\n", fname, directory);
-        exit(1);
-      }
-
-      if (!exists) {
-        fprintf(output, "funcid,dim,milestone,error\n");
-      }
-    }
-
-    if (print_output == 1) {
-      printf("%d,%d,%d,%e\n", funcid, dimension, ratio, cec17_error(best));
-      fflush(stdout);
-    }
-    else {
-      fprintf(output, "%d,%d,%d,%e\n", funcid, dimension, ratio, cec17_error(best));
-      fclose(output);
-      output = NULL;
-    }
-    last_ratio += 1;
-
-    if (last_ratio >= max_ratios) {
-      last_ratio = 0;
-    }
-
-  }
 
   return fit;
 }
